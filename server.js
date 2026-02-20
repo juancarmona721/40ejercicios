@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql2')
 const app = express()
 
+
 app.use(express.json())
 
 const pool = mysql.createPool({
@@ -18,13 +19,22 @@ const promisePool = pool.promise();
 
 app.get('/ordenes-usuarios', async (req , res)=>{
     try{
-        SELECT users.name, orders.user_id
+        const sql = 
+        `SELECT users.name,users.email, orders.order_number
         FROM users
         INNER JOIN orders ON users.id = orders.user_id
-        WHERE users.name = ['jorge']
+        WHERE users.name = 'jorge'`;
+
+        const [rows] = await promisePool.query(sql);
+        res.json(rows)
     }
     catch (error){
-        res.status(500).send('error en la bse de datos')
+        console.error(error);
+        res.status(500).send('error en la bse de datos');
     }
-
 })
+
+const port = 3002
+app.listen(port, () => {
+    console.log(`Servidor corriendo en http://localhost:${port}`);
+});
