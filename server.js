@@ -34,6 +34,132 @@ app.get('/ordenes-usuarios', async (req , res)=>{
     }
 })
 
+app.get('/pedido-por-email', async (req , res)=>{
+    try{
+        const sql = 
+        `SELECT orders.order_number,orders.order_date, users.email
+        FROM users
+        INNER JOIN orders ON users.id = orders.user_id
+        WHERE users.email = 'guillermo.gracia@iglesias.com'`;
+
+        const [rows] = await promisePool.query(sql);
+        res.json(rows)
+    }
+    catch (error){
+        console.error(error);
+        res.status(500).send('error en la bse de datos');
+    }
+})
+
+
+app.get('/producto-categoria', async (req , res)=>{
+    try{
+        const sql = 
+        `SELECT products.name , products.category_id
+        FROM products
+        `;
+
+        const [rows] = await promisePool.query(sql);
+        res.json(rows)
+    }
+    catch (error){
+        console.error(error);
+        res.status(500).send('error en la bse de datos');
+    }
+})
+
+app.get('/usuario-sin-ordenes', async (req , res)=>{
+    try{
+        const sql = 
+        `SELECT users.id, orders.user_id
+        FROM users
+        LEFT JOIN orders ON users_id = orders.user_id
+        WHERE orders.user_id IS NULL
+        `;
+
+        const [rows] = await promisePool.query(sql);
+        res.json(rows)
+    }
+    catch (error){
+        console.error(error);
+        res.status(500).send('error en la bse de datos');
+    }
+})
+
+app.get('/monto-gastado-uduario', async (req , res)=>{
+    try{
+        const sql = 
+        ` 
+        SELECT users.name, SUM(orders.total) 
+        FROM users 
+        INNER JOIN orders ON users.id = orders.user_id 
+        WHERE users.name = 'Jorge' AND orders.status = 'paid' 
+        GROUP BY users.id, users.name;
+        `;
+
+        const [rows] = await promisePool.query(sql);
+        res.json(rows)
+    }
+    catch (error){
+        console.error(error);
+        res.status(500).send('error en la bse de datos');
+    }
+})
+
+app.get('/monto-gastado-uduario', async (req , res)=>{
+    try{
+        const sql = 
+        ` 
+        
+        
+        `;
+
+        const [rows] = await promisePool.query(sql);
+        res.json(rows)
+    }
+    catch (error){
+        console.error(error);
+        res.status(500).send('error en la bse de datos');
+    }
+})
+
+app.get('/monto-gastado-uduario', async (req , res)=>{
+    try{
+        const sql = 
+        ` 
+        
+        
+        `;
+
+        const [rows] = await promisePool.query(sql);
+        res.json(rows)
+    }
+    catch (error){
+        console.error(error);
+        res.status(500).send('error en la bse de datos');
+    }
+})
+
+app.get('/monto-gastado-uduario', async (req , res)=>{
+    try{
+        const sql = 
+        ` 
+        
+        
+        `;
+
+        const [rows] = await promisePool.query(sql);
+        res.json(rows)
+    }
+    catch (error){
+        console.error(error);
+        res.status(500).send('error en la bse de datos');
+    }
+})
+
+
+
+
 const port = 3002
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
